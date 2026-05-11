@@ -26,9 +26,10 @@ export async function GET(request: NextRequest) {
             response.cookies.set(name, value, {
               ...options,
               sameSite: 'lax',
-              secure: process.env.NODE_ENV === 'production',
+              secure: true,
               httpOnly: true,
               path: '/',
+              domain: undefined,
             })
           })
         },
@@ -40,7 +41,7 @@ export async function GET(request: NextRequest) {
 
   if (error) {
     console.error('Callback error:', error.message)
-    return NextResponse.redirect(`${origin}/login?error=auth_failed`)
+    return NextResponse.redirect(`${origin}/login?error=${error.message}`)
   }
 
   return response
